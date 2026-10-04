@@ -1,0 +1,110 @@
+root{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color:blanchedalmond;
+    font-family: Nunito, sans-serif;
+    font-size: 1rem;
+}
+
+main{
+    max-width: 900px;
+    margin:auto;
+    padding:0.5rem;
+    text-align:center;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+ul{
+    list-style: none;
+    display: flex;
+}
+
+li{
+    margin-right: 1rem;
+}
+
+h1{
+    color:chocolate;
+    margin-bottom: 0.5rem;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 280px;
+    text-align: left;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.card-content h3 {
+    color: chocolate;
+    margin-bottom: 0.5rem;
+}
+
+.card-content p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.price {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.8rem;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: chocolate;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-buy {
+    font-size: 1rem;
+    padding: 0.8rem;
+}
+
+
+.btn:hover {
+    background-color: #a0522d; /* Tono de café un poco más oscuro */
+}
