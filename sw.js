@@ -57,20 +57,37 @@ self.addEventListener('activate', (event) => {
 
 // Evento fetch: responde con caché o red (con tolerancia a parámetros URL en detalle.html)
 self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+
+    // 1. ESTRATEGIA NETWORK FIRST: Para páginas HTML (para que siempre busquen la versión más nueva si hay internet)
+    if (event.request.mode === 'navigate' || url.pathname.endsWith('.html')) {
+        event.respondWith(
+            fetch(event.request)
+                .then((networkResponse) => {
+                    // Actualiza la caché con la versión fresca de la red
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                })
+                .catch(() => {
+                    // Si falla la red (offline), responde con la caché
+                    return caches.match(event.request).then((cachedResponse) => {
+                        if (cachedResponse) return cachedResponse;
+                        // Si era detalle con parámetros (?id=X)
+                        if (url.pathname.endsWith('detalle.html')) {
+                            return caches.match('./detalle.html');
+                        }
+                    });
+                })
+        );
+        return;
+    }
+
+    // 2. ESTRATEGIA CACHE FIRST: Para recursos estáticos (CSS, JS, imágenes, fuentes)
     event.respondWith(
-        caches.match(event.request, { ignoreSearch: false }).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
-
-            // Si la consulta es a detalle.html con parámetros (ej. detalle.html?id=2)
-            // y no está cacheada la URL exacta, respondemos con el archivo base detalle.html
-            const url = new URL(event.request.url);
-            if (url.pathname.endsWith('detalle.html')) {
-                return caches.match('./detalle.html');
-            }
-
-            return fetch(event.request);
+        caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || fetch(event.request);
         })
     );
 });
